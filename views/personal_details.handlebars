@@ -1,0 +1,165 @@
+<div class="pd-Container">
+
+    <div class="photo-form">
+
+        <div id="details">
+            <img id="user-photo" class="user-photo" src="images/avatars/{{user.avatar}}">
+            <h1>Welcome, {{user.name}}</h1>
+        </div>
+
+        <div class="flex-col mb">
+            <button id="avatar_show" class="user-photo-select">Change Your Avatar</button>
+        </div>
+
+        <div class="flex-col mb">
+            <a class="changepassword-btn" href="./changePassword">Change Your Password</a>
+        </div>
+
+        <div class="flex-col mb">
+            <form action="./deleteAccount" method="POST" onsubmit="return sumbit_sure()">
+                <input type="hidden" name="id" value="{{user.id}}">
+                <input type="hidden" name="role" value="{{user.role}}">
+                <button class="delete-btn" type="submit" style="cursor: pointer">Permanently Delete This
+                    Account</button>
+            </form>
+        </div>
+
+    </div>
+
+    <div class="change-form">
+        <h2>Account Information</h2>
+        {{#if message}}
+        <h3>{{message}}</h3>
+        {{/if}}
+
+        <form action="./changeAccount" method="POST">
+            <input type="hidden" name="avatar" id="user-avatar" value="{{user.avatar}}">
+            <input type="hidden" name="id" value="{{user.id}}">
+            <input type="hidden" name="role" value="{{user.role}}">
+            <div class="err-msg hidden" id="error_message">Username already registered</div>
+            <div class="flex-col mb">
+                <h4>Email</h4>
+                <input type="text" name="username" id="txtUsername" placeholder="Email" value="{{user.username}}"
+                    required>
+            </div>
+
+            <div class="flex-col mb">
+                <h4>Company Name</h4>
+                <input type="text" name="realname" id="txtrealname" placeholder="Company Name" value="{{user.name}}"
+                    required>
+            </div>
+
+            <div class="flex-col mb">
+                <h4>Description</h4>
+                <textarea id="txtDescription" name="description" rows="3" cols="10">{{user.description}}</textarea>
+            </div>
+
+            <div class="flex-row justify-sb align-center">
+                <button class="change-button" type="submit" style="cursor: pointer">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+
+<div id="avatar_content" class="modal" style="display: none">
+    <div class="modal-dialog">
+        <div class="header">
+            <span>Update Avatar</span>
+            <span id="modal_close" class="close">×</span>
+        </div>
+        <div class="content">
+            <div id="avatar_list"></div>
+        </div>
+        <div class="footer">
+            <form action="./" method="GET"></form>
+            <button id="modal_cancel" class="cancel-btn">Cancel</button>
+            <button id="modal_confirm" class="confirm-btn">Confirm</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+const avatarList = document.getElementById('avatar_list');
+    const userPhoto = document.getElementById('user-photo');
+    const userAvatar = document.getElementById('user-avatar');
+    const avatarContent = document.getElementById('avatar_content');
+    const avatarShow = document.getElementById('avatar_show');
+    const modalClose = document.getElementById('modal_close');
+    const modalCancel = document.getElementById('modal_cancel');
+    const modalConfirm = document.getElementById('modal_confirm');
+    const txtUsername = document.getElementById('txtUsername');
+    const error_message = document.getElementById('error_message');
+    let currentImg;
+    for (let i = 0; i < 35; i++) {
+        const imgItem = document.createElement('img');
+        const avatar = 'avatar' + (i + 1);
+        imgItem.src = 'images/avatars/' + avatar + '.jpg';
+        imgItem.classList.add('img-item');
+        imgItem.addEventListener('click', function () {
+            if (!imgItem.classList.contains('selected')) {
+                avatarList.querySelectorAll('.img-item').forEach(img => img.classList.remove('selected'));
+                imgItem.classList.add('selected');
+                currentImg = avatar + '.jpg';
+            }
+        });
+        avatarList.appendChild(imgItem);
+    }
+
+    avatarShow.addEventListener('click', function () {
+        avatarContent.style.display = 'block';
+    });
+    modalCancel.addEventListener('click', function () {
+        avatarContent.style.display = 'none';
+    });
+    modalClose.addEventListener('click', function () {
+        avatarContent.style.display = 'none';
+    });
+
+    modalConfirm.addEventListener('click', function () {
+        const body = {
+            id: {{ user.id }},
+            avatar: currentImg
+        }
+        window.location.reload();
+    if (currentImg) {
+        fetch('/updateUserAvatar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        }).then(res => {
+            if (res.status === 200) {
+                userAvatar.value = currentImg;
+                userPhoto.src = 'images/avatars/' + currentImg;
+                avatarContent.style.display = 'none';
+            }
+        });
+    } else {
+        alert('Please select a avatar.');
+    }
+    });
+
+    txtUsername.addEventListener('input', function (event) {
+        const username = event.target.value;
+        fetch('./checkUsername?username=' + username)
+            .then(res => {
+                if (res.status !== 200) {
+                    error_message.classList.remove('hidden');
+                } else {
+                    error_message.classList.add('hidden');
+                }
+            });
+    });
+
+    function sumbit_sure(){
+    const gnl=confirm("This operation is not recoverable. Your projects, comments and votes will be deleted. Are you sure to delete this account?");
+    if (gnl==true){
+    return true;
+    }else{
+    return false;
+    }
+  }
+</script>

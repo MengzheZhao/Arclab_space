@@ -1,0 +1,46 @@
+<div class="article-container-white">
+<body>  <script src="https://cdn.tiny.cloud/1/mofvonscc6y52zz8gkc5yolfimkdgar857efiu0c9f3ysj8u/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
+<form action="/newArticle" method="POST">
+<input  type="text" name="editID" style="display: none;"    value={{editID}}>
+<input type="text" name="articleID" style="display: none;"  value={{article.id}}>
+<div class="form-group">
+    <label for="articleTitle"><a href="./myArticles" style="TEXT-DECORATION:none">← Back</a><h3>Title</h3></label>
+    <input type="text" name="title" id="articleTitle" style="height:50px;width:auto;font-size:large;" required  value="{{{article.title}}}">
+    <textarea   name="content" id="articleContent" style="width: 100%;height:500px;">{{{content}}}</textarea>
+</div>
+   <button type="submit" class="form-btn">submit</button>
+</form>
+
+ <script>
+    tinymce.init({
+      selector: 'textarea',
+      plugins: ' image imagetools paste advcode',
+      toolbar: ' undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent image',
+      toolbar_mode: 'floating',
+      menubar:"edit view format",
+       paste_data_images: true,
+     
+
+     images_upload_handler: async function (blobInfo, succFun, failFun) {
+       let formData;
+       let file;
+       formData = new FormData();
+       file = blobInfo.blob();
+       formData.append("file",file,file.name);
+       const promise = await fetch(`/uploadImage`,{
+         method:'POST',
+         mode: 'cors',
+         credentials: 'include',
+        body:formData,
+       });
+       
+       const image = await promise.json();
+       const url = `/uploadFiles/${image.originalname}`;
+       succFun(url);
+    }
+   });
+  </script>
+
+</body>
+</div>

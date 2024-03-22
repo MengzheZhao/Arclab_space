@@ -1,0 +1,77 @@
+    .navigation {
+        height: 60px;
+        background: -webkit-linear-gradient(rgba(140, 160, 179, 0.8), rgb(66, 66, 66, 0.2));
+        background-size: 100%;
+        border: none;
+        box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
+        display: flex;
+        justify-content: space-between;
+    }
+    .nav-bar {
+        margin-top: 15px;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        column-gap: 20px;
+    }
+    .nav-items {
+        margin: 0px 20px;
+        align-items: center;
+        text-decoration: none;
+        width: 1.5em;
+        height: 1.5em;
+    }
+    .nav-items>img {
+        width: 140%;
+    }
+
+    .nav-bar-icons {
+        width: 50px;
+        height: 30px;
+    }
+    #userPhoto {
+        border-radius: 500%;
+        border: 3px solid rgb(219, 219, 219);
+        width: 40px;
+        height: 40px;
+        margin: 0 20px;
+    }
+    #userPhotoLink {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        align-self: flex-start;
+        text-decoration: none;
+        color: white;
+        font-size: 20px;
+        margin-top: -12px;
+    }
+    #userPhotoLink p {
+        padding: 0px 10px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        color: rgba(255, 255, 255, 0.767);
+        font-size: 26px;
+        font-weight: bolder;
+        text-shadow:2px 2px 2px #0000002a;
+    }
+    /* new article Forms */
+    /*****************************************************************/
+    form .form-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+        gap: 10px;
+    }
+    form .form-btn {
+        background-color: gray;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        cursor: pointer;
+        font-size: 15px;
+        border-radius: 5px 5px;
+    }

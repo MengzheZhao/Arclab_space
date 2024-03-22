@@ -1,0 +1,134 @@
+<div class="article-container">
+
+    <h1 id="personalInfoInMyArticlePage">{{user.name}}'s PROJECT 
+        <a href="./newArticle" id="CPbutton">Create Project</a>
+</h1>  
+
+    <div id="sortBtns">
+        <button id="titleSortBtn" class="orderBtn">
+            <p id="titleSort">▲ titles</p>
+        </button>
+
+        <button id="dateSortBtn" class="orderBtn selected">
+            <p id="dateSort">▼ date</p>
+        </button>
+
+    </div>
+
+    <div id="articleListContainer"></div>
+
+    <script type="text/javascript">
+
+        const titleSortBtn = document.querySelector("#titleSortBtn");
+        const dateSortBtn = document.querySelector("#dateSortBtn");
+
+
+        titleSortBtn.addEventListener("click", function () {
+            titleSortBtn.classList.add("selected");
+            dateSortBtn.classList.remove("selected");
+
+        });
+
+        dateSortBtn.addEventListener("click", function () {
+            titleSortBtn.classList.remove("selected");
+            dateSortBtn.classList.add("selected");
+
+        });
+
+
+
+        sortArticleByDateDESC();
+        // show sorted articles
+        function displaySortMyArticles(articles) {
+            const sortlist = document.querySelector("#articleListContainer");
+
+
+            sortlist.innerHTML = "";
+            articles.forEach(function (article) {
+
+                if (article.publisherID === {{ user.id }}){
+
+                const articleCarddiv = document.createElement("div");
+                articleCarddiv.classList.add("articleCard");
+
+                const ahrefContainer = document.createElement("p");
+                ahrefContainer.classList.add("ahrefContainer");
+                const ahref = document.createElement("a");             
+                ahref.setAttribute("href", `/article?articleID=${article.id}&publisherID=${article.publisherID}`);
+                ahref.innerHTML=`${article.title}`;
+
+                const simpleArtiInfo = document.createElement("p");
+                simpleArtiInfo.innerHTML = `Published at ${article.publishTime}`;
+                simpleArtiInfo.classList.add("simpleArtiInfo");
+
+                ahrefContainer.appendChild(ahref);
+                articleCarddiv.appendChild(ahrefContainer);
+                articleCarddiv.appendChild(simpleArtiInfo);
+                sortlist.appendChild(articleCarddiv);
+            }
+        })
+        }
+
+        // add sort by title btn
+        const sortByTitle = document.querySelector("#titleSort");
+        sortByTitle.addEventListener("click", function () {
+            const btn = sortByTitle.innerHTML;
+
+            if (btn === "▲ titles") {
+                sortByTitle.innerHTML = "▼ titles";
+
+                sortArticlesByTitleASC();
+            } else {
+                sortByTitle.innerHTML = "▲ titles";
+                sortArticlesByTitleDESC()
+            }
+        });
+
+        async function sortArticlesByTitleASC() {
+            const response = await fetch("./sortByTitleASCJSON");
+            articles = await response.json();
+            displaySortMyArticles(articles);
+        }
+
+        async function sortArticlesByTitleDESC() {
+            const response = await fetch("./sortByTitleDESCJSON");
+            articles = await response.json();
+            displaySortMyArticles(articles);
+
+        }
+
+
+        // add sort by date btn
+        const sortByDate = document.querySelector("#dateSort");
+        sortByDate.addEventListener("click", function () {
+            const btn = sortByDate.innerHTML;
+
+            if (btn === "▼ date") {
+                sortByDate.innerHTML = "▲ date";
+
+                sortArticleByDateDESC();
+            } else {
+                sortByDate.innerHTML = "▼ date";
+                sortArticleByDateASC();
+            }
+        })
+
+        async function sortArticleByDateDESC() {
+            const response = await fetch("./sortByDateDESCJSON");
+            articles = await response.json();
+            displaySortMyArticles(articles);
+        }
+        async function sortArticleByDateASC() {
+            const response = await fetch("./sortByDateASCJSON");
+            articles = await response.json();
+            displaySortMyArticles(articles);
+        }
+
+
+
+
+    </script>
+
+
+
+</div>

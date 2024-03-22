@@ -1,0 +1,126 @@
+<div class="article-container-white">
+
+    <div class="article-title">
+        <a href="./myArticles" style="TEXT-DECORATION:none">← Back</a>
+        <h1>{{{article.title}}}</h1>
+    </div>
+    <div class="publishTime articleInfo">
+        <p>Published at: {{article.publishTime}}, By User: {{article.username}}</p>
+    </div>
+    <div class="article-contents">{{{content}}}</div>
+    <div id="AritclePublisherInfoDiv" style="display: none;">{{article.publisherID}}</div>
+
+
+    <div class="editPart bottomBtns">
+        {{#if isPublishedBy}}
+        <img src="./images/icons/edit.png" class="editBtn" id="editBtn-{{article.id}}-1">
+        <img src="./images/icons/delete.png" class="deleteBtn" id="deleteBtn-{{article.id}}-0">
+        {{/if}}
+    </div>
+
+    <hr>
+    <div class="btnsAfterContents">
+        
+        {{#if comments}}
+        <button id="hide-all-comments">▶ Hide All Nested Comments</button>
+        {{else}}
+        <div class="displayOnlyLogin ideas" >Comments</div>
+        {{/if}}
+        {{#if user}}
+        <img src="./images/icons/new.png"  class="commentBtn displayOnlyLogin" id="comment-{{article.id}}-0">
+        {{/if}}
+    </div>
+
+    <div id="LoginUserInfoDiv" style="display: none;">{{#if user}}{{user.id}}{{/if}}</div>
+    {{#if comments}}
+    <div id="article-comment-container">
+        <div class="subcomment-level-0" id="comment-ul-{{this.commentID}}">
+            {{#each comments}}
+
+            <div class="comment-card comment-card-level-0"
+                id="comment-card-{{this.articleID}}-{{this.commentID}}-{{this.publisherID}}">
+
+                <div class="user-photo-container"><img src="/images/avatars/{{this.avatar}}" class="comment-user-photo">
+                </div>
+            
+                    <div class="comment-contents">{{this.contents}}</div>
+                    <p class="commentInfo">At {{this.commentTime}}, By {{this.username}}</p>
+
+                    <div class="comment-btn-line">
+                    <div class="upvote"><img src="./images/icons/likeoff.png" class="displayOnlyLogin upvoteBtn" id="upvote-{{this.commentID}}"> </div>
+                    <div class="nums" id="upvoteNum-{{this.commentID}}">Like: {{this.upvote}} </div>
+                    <div class="downvote"><img src="./images/icons/dislikeoff.png" class="displayOnlyLogin downvoteBtn" id="downvote-{{this.commentID}}"> </div>
+                    <div class="nums" id="downvoteNum-{{this.commentID}}">Dislike: {{this.downvote}} </div>
+                    <div class="possiblebtns"><img src="./images/icons/new.png" class="commentBtn displayOnlyLogin" id="comment-{{this.articleID}}-{{this.commentID}}-{{this.publisherID}}"><br></div>
+                    </div><br>
+
+                    {{#if this.subComments}}
+                    <button class="hide-comment" id="hide-comment-{{this.commentID}}">▶ Hide Nested
+                        Comments</button>
+                    <div class="subcomment-level-1 next-level" id="comment-ul-{{this.commentID}}">
+                        {{#each this.subComments}}
+
+                        <div class="comment-card comment-card-level-1"
+                            id="comment-card-{{this.articleID}}-{{this.commentID}}-{{this.publisherID}}">
+                            <div class="user-photo-container">
+                                <img src="/images/avatars/{{this.avatar}}" class="comment-user-photo">
+                            </div>
+
+                                <div class="comment-contents">{{this.contents}}</div>
+                                <p class="commentInfo">At {{this.commentTime}}, By {{this.username}}</p>
+
+                                <div class="comment-btn-line">
+                                <div class="upvote"><img src="./images/icons/likeoff.png" class="displayOnlyLogin upvoteBtn" id="upvote-{{this.commentID}}"> </div>
+                                <div class="nums" id="upvoteNum-{{this.commentID}}">Like: {{this.upvote}} </div>
+                                <div class="downvote"><img src="./images/icons/dislikeoff.png" class="displayOnlyLogin downvoteBtn"  id="downvote-{{this.commentID}}"> </div>
+                                <div class="nums" id="downvoteNum-{{this.commentID}}">Dislike: {{this.downvote}} </div>
+                                <div class="possiblebtns"><img src="./images/icons/new.png" class="commentBtn displayOnlyLogin" id="comment-{{this.articleID}}-{{this.commentID}}-{{this.publisherID}}"><br></div>
+                                </div><br>
+
+                                {{#if this.subComments}}
+                                <button class="hide-comment" id="hide-comment-{{this.commentID}}">▶ Hide Nested
+                                    Comments</button>
+                                <div class="subcomment-level-2 next-level" id="comment-ul-{{this.commentID}}">
+                                    {{#each this.subComments}}
+
+                                    <div class="comment-card comment-card-level-2"
+                                        id="comment-card-{{this.articleID}}-{{this.commentID}}-{{this.publisherID}}">
+
+                                        <div class="user-photo-container">
+                                            <img src="/images/avatars/{{this.avatar}}" class="comment-user-photo">
+                                        </div>
+           
+                                            <div class="comment-contents">{{this.contents}}</div>
+                                            <p class="commentInfo">At {{this.commentTime}}, By
+                                                {{this.username}}
+                                            </p>
+
+                                            <div class="comment-btn-line">
+                                            <div class="upvote"><img src="./images/icons/likeoff.png"  class="displayOnlyLogin upvoteBtn" id="upvote-{{this.commentID}}"> </div>
+                                            <div class="nums" id="upvoteNum-{{this.commentID}}">Like: {{this.upvote}} </div>
+                                            <div class="downvote"><img src="./images/icons/dislikeoff.png" class="displayOnlyLogin downvoteBtn" id="downvote-{{this.commentID}}">  </div>
+                                            <div class="nums" id="downvoteNum-{{this.commentID}}">Dislike: {{this.downvote}} </div>
+                                            <div class="possiblebtns" ><img src="./images/icons/new.png" style="display: none;" class="commentBtn displayOnlyLogin" id="comment-{{this.articleID}}-{{this.commentID}}-{{this.publisherID}}"><br></div>
+                                            </div><br>
+                                          
+                                    </div>
+                                    </li>
+                                    {{/each}}
+                                </div>
+                                {{/if}}
+                            
+                        </div>
+                        </li>
+                        {{/each}}
+                    </div>
+                    {{/if}}
+                  
+            </div>
+            </li>
+            {{/each}}
+        </div>
+    </div>
+    {{/if}}
+
+
+</div>

@@ -1,0 +1,85 @@
+<div class="pd-Container">
+    
+<div class="introduction">
+      <h1>ARCLAB</h1>
+      <div class="services">
+        <p class="intro">
+          We are a team of architectural technicians and professional surveyors specialising in advanced 3D surveying &amp; as-built documentation. We work directly with architects, interior designers &amp; engineers.
+        </p>
+
+        <ul class="services-list">
+                      <li><span>+</span> Laser Scanning</li>
+                      <li><span>+</span> Land Surveying</li>
+                      <li><span>+</span> BIM As-Builts (Archicad / Revit)</li>
+                      <li><span>+</span> Drone Surveys</li>
+                  </ul>
+      </div>
+
+      <div class="contact-details">
+        <div class="col">
+          <p class="email"><a>contact@arclab.works</a></p>
+          <p class="phone"><a>+64 21 251 3205</a></p>
+        </div>
+
+        <div class="col">
+          <p class="addr">478 K Road<br>
+Auckland NZ</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="login-form">
+        <h2>Login</h2>
+        <h3 id="login-message"></h3>
+        <form>
+            <div class="flex-col mb">
+                <input type="text" name="username" id="txtUsername" placeholder="Email" required>
+            </div>
+
+            <div class="flex-col mb">
+                <input type="password" name="password" id="txtPassword" placeholder="Password" required>
+            </div>
+
+            <div class="flex-row justify-sb align-center">
+                <button class="login-button" type="submit" id="login" style="cursor: pointer">Login</button>
+            </div>
+        </form>
+        <p>Don't have an account? <a href="./newAccount" style="color:white" >Register</a></p> 
+    </div>
+</div>
+
+<script>
+const txtUsername = document.getElementById('txtUsername');
+const txtPassword = document.getElementById('txtPassword');
+const loginMessage = document.getElementById('login-message');
+
+if (window.location.search) {
+    const message = window.location.search.split('message=');
+    if (message.length > 0) {
+        loginMessage.innerHTML = decodeURIComponent(message[1]);
+    }
+}
+
+// add login button click event
+document.getElementById('login').addEventListener('click', function(event) {
+    event.preventDefault();
+    loginMessage.innerText = '';
+
+    fetch('/api/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            username: txtUsername.value,
+            password: txtPassword.value
+        })
+    }).then(res => {
+       if (res.status === 204) {
+           window.location.href = '/';
+       } else {
+           loginMessage.innerText = 'Authentication failed!';
+       }
+    });
+})
+</script>
